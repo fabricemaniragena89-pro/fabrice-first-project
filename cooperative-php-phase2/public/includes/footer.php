@@ -1,0 +1,1 @@
+</section><footer class="footer">© <?= date('Y') ?> Cooperative Management System <span>Built for accountable cooperative operations</span></footer></main></div><script src="assets/js/app.js"></script></body></html>

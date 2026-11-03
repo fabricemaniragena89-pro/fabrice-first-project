@@ -1,0 +1,12 @@
+<?php
+require_once __DIR__ . '/../../app/bootstrap.php';
+require_login();
+$user = current_user();
+$flashMessage = take_flash();
+$pageTitle = $pageTitle ?? APP_NAME;
+$currentPage = basename($_SERVER['SCRIPT_NAME'] ?? '');
+?>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?= e($pageTitle) ?> · <?= e(APP_NAME) ?></title><link rel="stylesheet" href="assets/css/app.css"></head><body>
+<div class="app-shell"><aside class="sidebar" id="sidebar"><a class="brand" href="index.php"><span class="brand-mark">C</span><span><?= e(APP_NAME) ?></span></a><div class="nav-label">WORKSPACE</div><a class="nav-link <?= $currentPage === 'index.php' ? 'active' : '' ?>" href="index.php">▦ <span>Dashboard</span></a><a class="nav-link <?= in_array($currentPage, ['members.php', 'member-form.php'], true) ? 'active' : '' ?>" href="members.php">♙ <span>Members</span></a><a class="nav-link <?= $currentPage === 'reports.php' ? 'active' : '' ?>" href="reports.php">▤ <span>Reports</span></a><?php if (in_array($user['role'], ['system_admin','cooperative_manager'], true)): ?><a class="nav-link <?= $currentPage === 'cooperatives.php' ? 'active' : '' ?>" href="cooperatives.php">⌂ <span>Cooperatives</span></a><?php endif; ?><?php if ($user['role'] === 'system_admin'): ?><a class="nav-link <?= in_array($currentPage, ['users.php', 'user-form.php'], true) ? 'active' : '' ?>" href="users.php">♙ <span>User management</span></a><?php endif; ?><div class="nav-label">ACCOUNT</div><a class="nav-link <?= $currentPage === 'profile.php' ? 'active' : '' ?>" href="profile.php">⚙ <span>My profile</span></a><a class="nav-link" href="logout.php">↪ <span>Sign out</span></a><div class="sidebar-foot"><span class="avatar"><?= e(strtoupper(substr($user['full_name'],0,1))) ?></span><span><strong><?= e($user['full_name']) ?></strong><small><?= e(str_replace('_',' ',$user['role'])) ?></small></span></div></aside>
+<main class="main"><header class="topbar"><button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button><div><div class="eyebrow">COOPERATIVE OPERATIONS</div><h1><?= e($pageTitle) ?></h1></div><div class="topbar-right"><span class="status-dot"></span><span>System online</span></div></header><section class="content">
+<?php if ($flashMessage): ?><div class="alert <?= e($flashMessage['type']) ?>" role="status"><?= e($flashMessage['message']) ?></div><?php endif; ?>
